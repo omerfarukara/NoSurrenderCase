@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: dbc4c9d173fa94c2eba60c8c5658841d
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Hando Soft Trial
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: b7c302f89cb5d452db66256fe9999feb, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
