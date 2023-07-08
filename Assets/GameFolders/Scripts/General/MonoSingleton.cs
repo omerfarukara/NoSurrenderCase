@@ -1,14 +1,21 @@
 using UnityEngine;
 
-namespace GameFolders.Scripts.General
+namespace Game.Scripts.General
 {
-    public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
+    public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static volatile T _instance = null;
 
         public static T Instance => _instance;
 
-        protected void Singleton(bool dontDestroyOnLoad = false)
+        [SerializeField] private bool dontDestroyOnLoad = false;
+
+        private void Awake()
+        {
+            Singleton();
+        }
+
+        private void Singleton()
         {
             if (dontDestroyOnLoad)
             {

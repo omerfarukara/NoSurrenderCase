@@ -1,3 +1,4 @@
+using Game.Scripts.General;
 using GameFolders.Scripts.General;
 using UnityEngine;
 
@@ -9,7 +10,6 @@ namespace GameFolders.Scripts.Controllers
     
         private void Awake()
         {
-            Singleton();
             _eventData = Resources.Load("EventData") as EventData;
         }
     }

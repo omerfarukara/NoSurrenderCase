@@ -1,4 +1,5 @@
 using System;
+using Game.Scripts.General;
 using GameFolders.Scripts.General;
 using GameFolders.Scripts.Managers;
 using UnityEngine;
@@ -15,18 +16,15 @@ namespace GameFolders.Scripts.Controllers
         [SerializeField] private GameObject losePanel;
     
         [Header("Buttons")]
-        [SerializeField] Button nextLevelButton;
         [SerializeField] Button tryAgainButton;
 
         private void Awake()
         {
-            Singleton();
             _eventData = Resources.Load("EventData") as EventData;
         }
 
         private void OnEnable()
         {
-            nextLevelButton.onClick.AddListener(OnNextLevel);
             tryAgainButton.onClick.AddListener(OnTryAgain);
             _eventData.OnFinishLevel += OnFinish;
             _eventData.OnLoseLevel += OnLose;
@@ -40,22 +38,14 @@ namespace GameFolders.Scripts.Controllers
 
         private void OnFinish()
         {
-            victoryPanel.SetActive(true);
         }
 
         private void OnLose()
         {
-            losePanel.SetActive(true);
-        }
-
-        private void OnNextLevel()
-        {
-            GameManager.Instance.NextLevel();
         }
 
         private void OnTryAgain()
         {
-            GameManager.Instance.TryAgain();
         }
     }
 }

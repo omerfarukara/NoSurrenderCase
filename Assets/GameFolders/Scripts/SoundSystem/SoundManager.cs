@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Game.Scripts.General;
 using GameFolders.Scripts.General;
 using UnityEngine;
 
@@ -19,7 +20,6 @@ namespace GameFolders.Scripts.SoundSystem
         private void Awake()
         {
             _soundData = Resources.Load("SoundData") as SoundData;
-            Singleton(true);
             Initiate();
         }
 
