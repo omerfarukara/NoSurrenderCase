@@ -9,5 +9,8 @@ namespace GameFolders.Scripts.General
         public Action OnPlay { get; set; }
         public Action OnFinishLevel { get; set; }
         public Action OnLoseLevel { get; set; }
+        
+        public Action GamerCount { get; set; }
+        public Action Score { get; set; }
     }
 }

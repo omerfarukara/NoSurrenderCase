@@ -44,6 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e649b6ab7bb1444eb8247c0a6c5eaa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelCount: 0
-  randomLevelLowerLimit: 0
-  startDelay: 1
+  dontDestroyOnLoad: 1

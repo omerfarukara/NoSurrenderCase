@@ -12,9 +12,9 @@ namespace GameFolders.Scripts.Managers
     {
         #region Fields And Properties
 
-        private EventData _eventData;
+        private static EventData EventData => DataManager.Instance.eventData;
 
-        public GameState GameState { get; set; } = GameState.Play;
+        private GameState GameState { get; set; } = GameState.Idle;
 
         public int Gold
         {
@@ -22,19 +22,32 @@ namespace GameFolders.Scripts.Managers
             set => PlayerPrefs.SetInt("Gold", value);
         }
 
+        public int _score;
+        public int Score
+        {
+            get => _score;
+            set
+            {
+                _score = value;
+                EventData.Score?.Invoke();
+            }
+        }
+
         #endregion
    
         #region MonoBehaviour Methods
 
-        private void Awake()
-        {
-            _eventData = Resources.Load("EventData") as EventData;
-        }
     
         private void OnEnable()
         {
-            _eventData.OnFinishLevel += OnFinish;
-            _eventData.OnLoseLevel += OnLose;
+            EventData.OnFinishLevel += OnFinish;
+            EventData.OnLoseLevel += OnLose;
+            EventData.OnPlay += OnPlay;
+        }
+
+        private void OnPlay()
+        {
+            GameState = GameState.Play;
         }
 
         #endregion
