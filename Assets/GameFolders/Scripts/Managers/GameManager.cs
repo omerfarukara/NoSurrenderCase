@@ -14,7 +14,7 @@ namespace GameFolders.Scripts.Managers
 
         private static EventData EventData => DataManager.Instance.eventData;
 
-        private GameState GameState { get; set; } = GameState.Idle;
+        public GameState GameState { get; set; } = GameState.Idle;
 
         public int Gold
         {

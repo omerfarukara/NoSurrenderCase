@@ -1,5 +1,7 @@
 using System;
 using GameFolders.Scripts.Controllers;
+using GameFolders.Scripts.General;
+using GameFolders.Scripts.General.Data;
 using GameFolders.Scripts.Managers;
 using UnityEngine;
 
@@ -10,15 +12,14 @@ namespace GameFolders.Scripts.Components.Player
         #region Properties and Fields Classes
 
         //Forward Movement
-        [Header("Forward Movement")]
-        [SerializeField] private float forwardSpeed;
+        private float forwardSpeed;
 
         //Rotate Movement
-        [Header("Rotate Movement")]
-        [SerializeField] private float turnSpeed;
+        private float turnSpeed;
     
         //Classes
         private Rigidbody _rigidbody;
+        private static CharacterMovementData CharacterMovementData => DataManager.Instance.characterMovementData;
 
         //Fields
         private float horizontal;
@@ -30,6 +31,8 @@ namespace GameFolders.Scripts.Components.Player
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            forwardSpeed = CharacterMovementData.playerForwardSpeed;
+            turnSpeed = CharacterMovementData.playerTurnSpeed;
         }
 
 

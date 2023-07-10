@@ -5,6 +5,8 @@ using GameFolders.Scripts.Controllers;
 using GameFolders.Scripts.Controllers.AI;
 using GameFolders.Scripts.Controllers.Player;
 using GameFolders.Scripts.General;
+using GameFolders.Scripts.General.Data;
+using GameFolders.Scripts.Managers;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,22 +17,22 @@ namespace GameFolders.Scripts.Components.AI
     {
         #region Properties and Fields Classes
 
-        //private NavMeshAgent _agent;
-        [SerializeField] private float forwardSpeed;
+        private float forwardSpeed;
         private static EventData EventData => DataManager.Instance.eventData;
+        private static CharacterMovementData CharacterMovementData => DataManager.Instance.characterMovementData;
 
         #endregion
 
         internal bool _isRunning;
 
-        private Transform target;
+        internal Transform target;
         private Rigidbody _rigidbody;
         private AIController _previousAi;
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            //_agent = GetComponent<NavMeshAgent>();
+            forwardSpeed = CharacterMovementData.aiForwardSpeed;
         }
 
         private void OnEnable()
@@ -45,13 +47,19 @@ namespace GameFolders.Scripts.Components.AI
 
         private void Update()
         {
+            if(!GameManager.Instance.Playability()) return;
+
+            if (_previousAi  != null && _previousAi.IsDead)
+            {
+                SetTargetProcess();
+            }
+            
             if (!_isRunning) return;
 
-            //_agent.SetDestination(target.position);
             Vector3 direction = (target.position - transform.position).normalized;
+            _rigidbody.MovePosition(transform.position + new Vector3(direction.x,0,direction.z) * (Time.deltaTime * forwardSpeed));
+            transform.LookAt(new Vector3(target.position.x, 0, target.position.z));
 
-            _rigidbody.MovePosition(transform.position + direction * (Time.deltaTime * forwardSpeed));
-            transform.LookAt(target);
         }
 
         internal void SetTargetProcess()

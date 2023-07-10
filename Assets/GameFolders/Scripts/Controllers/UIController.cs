@@ -5,9 +5,11 @@ using DG.Tweening;
 using Game.Scripts.Counter;
 using Game.Scripts.General;
 using GameFolders.Scripts.General;
+using GameFolders.Scripts.General.FGEnum;
 using GameFolders.Scripts.Managers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -20,7 +22,7 @@ namespace GameFolders.Scripts.Controllers
         [Header("Panels")] [SerializeField] private GameObject victoryPanel;
         [SerializeField] private GameObject losePanel;
 
-        [Header("Buttons")] [SerializeField] Button tryAgainButton;
+        [Header("Buttons")] [SerializeField] Button nextButton;
         [FormerlySerializedAs("beforeGametimer")]
         [FormerlySerializedAs("timer")]
         [Header("Timer")]
@@ -51,7 +53,7 @@ namespace GameFolders.Scripts.Controllers
 
         private void OnEnable()
         {
-            tryAgainButton.onClick.AddListener(OnTryAgain);
+            nextButton.onClick.AddListener(OnNext);
 
             EventData.OnPlay += OnPlay;
             EventData.OnFinishLevel += OnFinish;
@@ -65,7 +67,7 @@ namespace GameFolders.Scripts.Controllers
             EventData.GamerCount?.Invoke();
             EventData.Score?.Invoke();
             
-            beforeGameTimer.TimerActive(0);
+            beforeGameTimer.TimerActive(2);
             inGameTimer.TimerActive(0);
         }
 
@@ -86,14 +88,17 @@ namespace GameFolders.Scripts.Controllers
 
         private void OnFinish()
         {
+            victoryPanel.SetActive(true);
+            GameManager.Instance.GameState = GameState.Finish;
         }
 
         private void OnLose()
         {
         }
 
-        private void OnTryAgain()
+        public void OnNext()
         {
+            SceneManager.LoadScene(0);
         }
 
         private void SetGamerCount()

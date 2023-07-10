@@ -6,6 +6,7 @@ namespace GameFolders.Scripts.Helpers
         {
             public const string IDLE = "Idle";
             public const string RUN = "Run";
+            public const string VICTORY = "Victory";
         }
 
     }

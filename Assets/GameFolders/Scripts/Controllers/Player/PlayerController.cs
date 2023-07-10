@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Game.Scripts.General;
 using GameFolders.Scripts.Components.Player;
 using GameFolders.Scripts.Controllers.AI;
 using GameFolders.Scripts.General;
+using GameFolders.Scripts.General.Data;
 using GameFolders.Scripts.Helpers;
 using UnityEngine;
 
@@ -15,9 +18,13 @@ namespace GameFolders.Scripts.Controllers.Player
         [SerializeField] private Animator _animator;
 
         private Rigidbody _rigidbody;
+
         private Movement _movement;
-        
+
+        public bool DoDamage { get; set; } = true;
+
         private static EventData EventData => DataManager.Instance.eventData;
+        private static CharacterMovementData CharacterMovementData => DataManager.Instance.characterMovementData;
 
         #endregion
 
@@ -30,19 +37,27 @@ namespace GameFolders.Scripts.Controllers.Player
         private void OnEnable()
         {
             EventData.OnPlay += AnimatorRun;
+            EventData.OnFinishLevel += AnimatorVictory;
         }
 
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.TryGetComponent(out AIController ai))
             {
-                // - Direction yeme sonra yeni target
-                Vector3 direction = collision.contacts[0].point - transform.position;
-                direction.Set(direction.x,0,direction.z);
+                if (!DoDamage)
+                {
+                    VelocityAndAngularReset();
+                }
+                else
+                {
+                    Vector3 direction = collision.contacts[0].point - transform.position;
+                    direction.Set(direction.x, 0, direction.z);
 
-                
-                ai.TakeKnock(direction.normalized,8);
-                TakeKnock(-direction.normalized,-3f);
+                    ai.TakeKnock(direction.normalized, CharacterMovementData.aiTakeKnock);
+                    ai.DoDamage = false;
+                    _movement.isKnocked = true;
+                    TakeKnock(-direction.normalized, CharacterMovementData.playerTakeKnockSelf); 
+                }
             }
         }
 
@@ -55,22 +70,24 @@ namespace GameFolders.Scripts.Controllers.Player
         {
             _animator.SetTrigger(GameConst.Animation.IDLE);
         }
+        
+        private void AnimatorVictory()
+        {
+            _animator.SetTrigger(GameConst.Animation.VICTORY);
+        }
 
         private void OnDisable()
         {
             EventData.OnPlay -= AnimatorRun;
+            EventData.OnFinishLevel -= AnimatorVictory;
         }
 
-        internal void TakeKnock(Vector3 direction,float force)
+        internal void TakeKnock(Vector3 direction, float force)
         {
-            _movement.isKnocked = true;
             AnimatorIdle();
-            VelocityAndAngularReset();
-            _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+            //_rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+            _rigidbody.AddForce(new Vector3(direction.x,0,direction.z) * force, ForceMode.VelocityChange);
 
-            //Vector3 direction = transform.forward;
-            _rigidbody.AddForce(direction * force, ForceMode.Impulse);
-            
             ResetProcess();
         }
 
@@ -78,15 +95,16 @@ namespace GameFolders.Scripts.Controllers.Player
         {
             Invoke(nameof(AnimatorRun), 1);
             Invoke(nameof(VelocityAndAngularReset), 1);
-            _movement.isKnocked = false;
-            _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-
+            //_rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         }
+
 
         private void VelocityAndAngularReset()
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
+            _movement.isKnocked = false;
+            DoDamage = true;
         }
     }
 }

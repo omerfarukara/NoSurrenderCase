@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e01532e7663a90d47a8666c7482808bd, type: 3}
+  m_Name: CharacterMovementData
+  m_EditorClassIdentifier: 
+  playerForwardSpeed: 150
+  playerTurnSpeed: 15
+  playerTakeKnock: 10
+  playerTakeKnockSelf: 3
+  aiForwardSpeed: 3
+  aiTakeKnock: 10
+  aiTakeKnockSelf: 3
